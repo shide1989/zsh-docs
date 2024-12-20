@@ -68,14 +68,20 @@ docs/
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+We welcome contributions to improve the Zsh documentation! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
 
 ## Acknowledgments
 
 - Original Zsh documentation by Paul Falstad
 - Zsh Contributors and Maintainers
 - VitePress Team for the documentation framework
+
+## Community & Support
+
+- [Report a bug](https://github.com/your-repo/zsh-docs/issues)
+- [Request a feature](https://github.com/your-repo/zsh-docs/issues)
+- [Join our discussions](https://github.com/your-repo/zsh-docs/discussions)
