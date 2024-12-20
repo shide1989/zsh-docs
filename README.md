@@ -1,4 +1,4 @@
-# Modern Zsh Documentation
+# Modern Zsh Documentation (WIP)
 
 This repository is an attempt to create a modern, user-friendly documentation site for the Z Shell (Zsh), built with VitePress.
 
