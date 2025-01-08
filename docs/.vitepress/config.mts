@@ -1,140 +1,147 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig } from "vitepress";
 
 export default defineConfig({
   title: "The Z Shell Manual",
   description: "Modern documentation for the Z Shell (Zsh)",
-  
+
   themeConfig: {
     nav: [
-      { text: 'Introduction', link: '/introduction/' },
+      { text: "Introduction", link: "/introduction/" },
       {
-        text: 'Getting Started',
+        text: "Getting Started",
         items: [
-          { text: 'Invocation', link: '/invocation/' },
-          { text: 'Roadmap', link: '/roadmap/' },
-          { text: 'Files', link: '/files/' },
-          { text: 'Shell Grammar', link: '/shell-grammar/' }
-        ]
+          { text: "Invocation", link: "/invocation/" },
+          { text: "Files", link: "/files/" },
+          { text: "Shell Grammar", link: "/shell-grammar/" },
+        ],
       },
       {
-        text: 'Core Concepts',
+        text: "Shell Basics",
         items: [
-          { text: 'Parameters', link: '/parameters/' },
-          { text: 'Expansion', link: '/expansion/' },
-          { text: 'Redirection', link: '/redirection/' }
-        ]
+          { text: "Parameters", link: "/parameters/" },
+          { text: "Expansion", link: "/expansion/" },
+          { text: "Redirection", link: "/redirection/" },
+          { text: "Execution", link: "/command-execution/" },
+        ],
       },
       {
-        text: 'Advanced',
+        text: "Shell Features",
         items: [
-          { text: 'Zsh Modules', link: '/zsh-modules/' },
-          { text: 'User Contributions', link: '/user-contributions/' }
-        ]
-      }
+          { text: "Jobs & Signals", link: "/jobs/" },
+          { text: "Arithmetic", link: "/arithmetic-evaluation/" },
+          {
+            text: "Conditional Expressions",
+            link: "/conditional-expressions/",
+          },
+        ],
+      },
+      {
+        text: "Line Editor",
+        items: [
+          { text: "Zle Basics", link: "/zle/" },
+          { text: "Zle Widgets", link: "/zle-widgets/" },
+          { text: "Zle Builtins", link: "/zle-builtins/" },
+        ],
+      },
     ],
 
     sidebar: {
-      '/': [
+      "/": [
         {
-          text: 'Getting Started',
+          text: "The Z Shell Manual",
           items: [
-            { text: 'Introduction', link: '/introduction/' },
-            { text: 'Roadmap', link: '/roadmap/' },
-            { text: 'Invocation', link: '/invocation/' },
-            { text: 'Files', link: '/files/' }
-          ]
+            { text: "Introduction", link: "/introduction/" },
+            { text: "Invocation", link: "/invocation/" },
+            { text: "Files", link: "/files/" },
+          ],
         },
         {
-          text: 'Shell Fundamentals',
+          text: "Shell Grammar",
           items: [
-            { text: 'Shell Grammar', link: '/shell-grammar/' },
-            { text: 'Redirection', link: '/redirection/' },
-            { text: 'Command Execution', link: '/command-execution/' },
-            { text: 'Functions', link: '/functions/' },
-            { text: 'Jobs & Signals', link: '/jobs/' }
-          ]
+            { text: "Shell Grammar", link: "/shell-grammar/" },
+            { text: "Redirection", link: "/redirection/" },
+            { text: "Command Execution", link: "/command-execution/" },
+            { text: "Functions", link: "/functions/" },
+            { text: "Jobs & Signals", link: "/jobs/" },
+          ],
         },
         {
-          text: 'Shell Programming',
+          text: "Basic Shell Features",
           items: [
-            { text: 'Arithmetic Evaluation', link: '/arithmetic-evaluation/' },
-            { text: 'Conditional Expressions', link: '/conditional-expressions/' },
-            { text: 'Prompt Expansion', link: '/prompt-expansion/' },
-            { text: 'Expansion', link: '/expansion/' },
-            { text: 'Parameters', link: '/parameters/' }
-          ]
+            { text: "Parameters", link: "/parameters/" },
+            { text: "Expansion", link: "/expansion/" },
+            { text: "Pattern Matching", link: "/pattern-matching/" },
+            { text: "Options", link: "/options/" },
+          ],
         },
         {
-          text: 'Configuration',
+          text: "Shell Builtin Commands",
           items: [
-            { text: 'Options', link: '/options/' },
-            { text: 'Shell Builtin Commands', link: '/shell-builtin-commands/' }
-          ]
+            {
+              text: "Shell Builtin Commands",
+              link: "/shell-builtin-commands/",
+            },
+            { text: "Shell Arithmetic", link: "/arithmetic/" },
+            {
+              text: "Conditional Expressions",
+              link: "/conditional-expressions/",
+            },
+          ],
         },
         {
-          text: 'Line Editor',
+          text: "Line Editor",
           items: [
-            { text: 'Zsh Line Editor', link: '/zsh-line-editor/' },
-            { text: 'Completion Widgets', link: '/completion-widgets/' },
-            { text: 'Completion System', link: '/completion-system/' },
-            { text: 'Completion Using compctl', link: '/completion-using-compctl/' }
-          ]
+            { text: "Zle Basics", link: "/zle/" },
+            { text: "Zle Widgets", link: "/zle-widgets/" },
+            { text: "Zle Builtins", link: "/zle-builtins/" },
+            { text: "User Contributions", link: "/user-contributions/" },
+          ],
         },
         {
-          text: 'Additional Features',
+          text: "Completion System",
           items: [
-            { text: 'Zsh Modules', link: '/zsh-modules/' },
-            { text: 'Calendar Function System', link: '/calendar-function-system/' },
-            { text: 'TCP Function System', link: '/tcp-function-system/' },
-            { text: 'Zftp Function System', link: '/zftp-function-system/' }
-          ]
+            { text: "Completion System", link: "/completion-system/" },
+            { text: "Completion Widgets", link: "/completion-widgets/" },
+            { text: "Completion Functions", link: "/completion-functions/" },
+            { text: "Control Functions", link: "/control-functions/" },
+          ],
         },
         {
-          text: 'Community',
+          text: "Zsh Modules",
           items: [
-            { text: 'User Contributions', link: '/user-contributions/' }
-          ]
+            { text: "Zsh Modules", link: "/zsh-modules/" },
+            { text: "Zsh/Attr", link: "/zsh-attr/" },
+            { text: "Zsh/DateTime", link: "/zsh-datetime/" },
+            { text: "Zsh/Files", link: "/zsh-files/" },
+          ],
         },
-        {
-          text: 'Reference',
-          items: [
-            { text: 'Concept Index', link: '/concept-index/' },
-            { text: 'Variables Index', link: '/variables-index/' },
-            { text: 'Options Index', link: '/options-index/' },
-            { text: 'Functions Index', link: '/functions-index/' },
-            { text: 'Editor Functions Index', link: '/editor-functions-index/' },
-            { text: 'Style and Tag Index', link: '/style-and-tag-index/' }
-          ]
-        }
-      ]
+      ],
     },
 
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/zsh-users/zsh' }
-    ],
+    socialLinks: [{ icon: "github", link: "https://github.com/zsh-users/zsh" }],
 
     search: {
-      provider: 'local'
+      provider: "local",
     },
 
     footer: {
-      message: 'Released under the MIT License.',
-      copyright: 'Copyright © 1990-2024 Paul Falstad and Zsh Contributors'
+      message: "Released under the MIT License.",
+      copyright: "Copyright © 1990-2024 Paul Falstad and Zsh Contributors",
     },
 
     // Version information
     docFooter: {
-      prev: 'Previous',
-      next: 'Next'
+      prev: "Previous",
+      next: "Next",
     },
 
     // Add version
     lastUpdated: {
-      text: 'Updated at',
+      text: "Updated at",
       formatOptions: {
-        dateStyle: 'full',
-        timeStyle: 'short'
-      }
-    }
-  }
-})
+        dateStyle: "full",
+        timeStyle: "short",
+      },
+    },
+  },
+});
