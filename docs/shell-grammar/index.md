@@ -52,6 +52,40 @@ command1 > >(command2) > >(command3)
 - Exit status is that of the last command (unless PIPEFAIL is set)
 :::
 
+### Pipeline Handling
+
+Zsh provides special handling for pipelines with the `PIPE_FAIL` option:
+
+```bash
+# Default behavior - pipeline status is last command
+echo "fail" | grep "success" | sort  # Status is 0 (sort succeeds)
+
+# With PIPE_FAIL
+setopt PIPE_FAIL
+echo "fail" | grep "success" | sort  # Status is 1 (grep fails)
+```
+
+::: tip Pipeline Control
+- Use `PIPE_FAIL` to catch errors in middle of pipeline
+- Pipeline runs in subshells by default
+- Use `coproc` for bidirectional pipelines
+:::
+
+### Pipeline Modifiers
+
+Pipelines can be modified with these operators:
+
+```bash
+# Time entire pipeline
+time cmd1 | cmd2
+
+# Run pipeline in background
+cmd1 | cmd2 &
+
+# Coproc for bidirectional communication
+coproc { cmd1 | cmd2 } 
+```
+
 ### Lists
 
 Lists are sequences of one or more pipelines separated by `;`, `&`, `&&`, or `||`.
@@ -74,6 +108,25 @@ ping -c 1 host || echo "host is down"
 # Combining operators
 command1 && command2 || command3
 ```
+
+### List Evaluation
+
+Lists follow specific evaluation rules:
+
+```bash
+# Operator precedence
+cmd1 && cmd2 || cmd3   # && evaluated before ||
+(cmd1 || cmd2) && cmd3 # Parentheses override precedence
+
+# Background lists
+{ sleep 2; echo "done"; } &  # Entire list in background
+```
+
+::: warning List Termination
+- Lists in compound commands must end with `;` or newline
+- Last command in a script doesn't need termination
+- Background lists continue even if shell exits
+:::
 
 ### Compound Commands
 
@@ -118,6 +171,39 @@ else
     command5
 fi
 ```
+
+## Complex Command Structures
+
+### Subshell Behavior
+
+```bash
+# Variable scope in subshells
+var="outside"
+(
+    var="inside"
+    echo "Inside: $var"  # Prints "inside"
+)
+echo "Outside: $var"     # Prints "outside"
+
+# Exit behavior
+(exit 1; echo "never reached")  # Subshell exits immediately
+```
+
+### Command Grouping Optimization
+
+```bash
+# Avoid subshell overhead
+{ cmd1; cmd2; } > output.txt  # Single process
+
+# Versus subshell (slower)
+(cmd1; cmd2) > output.txt     # New process
+```
+
+::: tip Performance
+- Use `{...}` when possible to avoid subshell overhead
+- Use `(...)` when isolation is needed
+- Consider `$( )` for command substitution
+:::
 
 #### case Statements
 

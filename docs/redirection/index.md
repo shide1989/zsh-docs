@@ -135,6 +135,71 @@ sort <file1 <file2  # Equivalent to: cat file1 file2 | sort
 sort <file{1,2}     # Same as above
 ```
 
+
+### Process Substitution
+
+```bash
+# Basic process substitution
+diff <(ls dir1) <(ls dir2)    # Compare directory listings
+sort -u <(sort file1) <(sort file2)  # Merge sorted files
+
+# Named pipe creation
+echo data > >(processing_command)
+cat <(echo header) file <(echo footer)
+```
+
+::: warning Performance Note
+Process substitution creates temporary files or named pipes. For large data sets, consider using regular files instead.
+:::
+
+### Error Handling
+
+```bash
+# Redirect errors only
+command 2>errors.log
+
+# Redirect both stdout and stderr to different files
+command >output.log 2>errors.log
+
+# Redirect stderr to stdout
+command 2>&1 | grep 'error'
+
+# Prevent both stdout and stderr
+command >/dev/null 2>&1
+```
+
+### Advanced File Descriptor Usage
+
+```bash
+# Save and restore file descriptors
+exec {oldfd}>&1        # Save stdout
+exec 1>output.log      # Redirect stdout
+echo "to file"         # Goes to file
+exec 1>&$oldfd         # Restore stdout
+exec {oldfd}>&-        # Close saved fd
+```
+
+::: tip File Descriptor Limits
+- File descriptors 0-9 are reserved
+- User file descriptors start at 10
+- Maximum depends on system limits
+:::
+
+### Redirection Order
+
+```bash
+# Order matters
+echo error 2>&1 >output.log   # stderr goes to terminal
+echo error >output.log 2>&1   # stderr goes to file
+
+# Multiple redirections
+cat file 2>&1 >/dev/null | grep 'pattern'
+```
+
+::: info Evaluation Order
+Redirections are processed left-to-right, but the `>` operator is processed before `>&`.
+:::
+
 ### Multios Caveats
 
 When using multios with external programs:

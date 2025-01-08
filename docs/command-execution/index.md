@@ -4,20 +4,20 @@
 Documentation for Zsh 5.9 (last updated May 14, 2022)
 :::
 
-## Command Resolution
+## Command Resolution Order
 
-When executing a command, Zsh follows a specific order to resolve and execute commands:
+When a command name contains no slashes, Zsh follows this resolution order:
 
-1. **Functions**: If a shell function exists with the command name
-2. **Builtins**: If a shell builtin exists with the command name
-3. **External Commands**: Search in `$path` for executable files
+1. **Shell Functions**: If a function exists with that name
+2. **Shell Builtins**: If a builtin exists with that name
+3. **External Commands**: Search in `$path` for an executable
 
 ```bash
-# Example of resolution order
-function ls { echo "function ls called"; }
-ls              # Calls the function
-command ls      # Bypasses function, calls builtin/external
-\ls             # Escapes function, calls builtin/external
+# Example resolution
+function ls { echo "function ls"; }
+ls              # Calls function
+command ls      # Bypasses function, calls external
+\ls             # Escapes function, calls external
 ```
 
 ## External Command Search
@@ -29,43 +29,34 @@ For commands without slashes, the shell searches each directory in `$path`:
 echo $path
 # Output: /usr/local/bin /usr/bin /bin
 
-# Search order for 'command':
-# 1. /usr/local/bin/command
-# 2. /usr/bin/command
-# 3. /bin/command
+# Search order for 'python':
+# 1. /usr/local/bin/python
+# 2. /usr/bin/python
+# 3. /bin/python
 ```
 
 ## Execution Failures
 
-When command execution fails, the shell returns specific error codes:
+When execution fails, the shell returns specific error codes:
 
 | Error Code | Description |
 |------------|-------------|
-| 127 | Command not found |
-| 126 | Permission denied or invalid format |
+| 127 | Command not found ('command not found: cmd') |
+| 126 | Insufficient permissions, is directory/special file, or unrecognized format |
 
 ```bash
-# Examples of execution failures
-nonexistent_command    # Returns 127
-chmod 000 script.sh    # Make file non-executable
-./script.sh           # Returns 126
+# Examples
+nonexistent_cmd    # Returns 127
+chmod 000 script.sh
+./script.sh        # Returns 126
 ```
 
 ## Script Execution
 
-### Direct Execution
+If a file is not in executable format (and not a directory), Zsh:
 
-When executing a file that's not in executable format:
-
-1. File is assumed to be a shell script
-2. `/bin/sh` is spawned to execute it
-
-```bash
-# Example script execution
-echo 'echo "Hello"' > script.txt
-sh script.txt        # Explicit interpreter
-./script.txt        # Zsh spawns /bin/sh
-```
+1. Assumes it's a shell script
+2. Spawns `/bin/sh` to execute it
 
 ### Shebang Handling
 
@@ -73,18 +64,16 @@ For files beginning with `#!`:
 
 ```bash
 #!/bin/bash
-echo "This is a bash script"
+echo "This script runs with bash"
 ```
 
 ::: info Interpreter Resolution
-- First line specifies the interpreter
-- Shell executes the specified interpreter
-- Useful for non-native executable formats
+- First line specifies interpreter
+- Shell executes specified interpreter
+- Kernel handles execution on supported systems
 :::
 
 ## Command Not Found Handler
-
-You can define a custom handler for commands that aren't found:
 
 ```bash
 # Define handler function
@@ -93,20 +82,140 @@ command_not_found_handler() {
     echo "Arguments: ${@:2}"
     return 127
 }
-
-# Example usage
-nonexistent_command arg1 arg2
-# Output:
-# Command not found: nonexistent_command
-# Arguments: arg1 arg2
 ```
 
 ::: warning Handler Limitations
-The handler runs in a subshell, so it cannot:
-- Change directories in the main shell
-- Modify shell parameters
-- Affect the parent shell's environment
+The handler:
+- Runs in a subshell
+- Cannot affect main shell environment
+- Changes to directories/parameters are isolated
 :::
+
+## Command Search Optimization
+
+### Command Hash Table
+
+```bash
+# View current hash table
+hash
+# Output: hash -d
+# /usr/bin/ls=ls
+# /usr/bin/git=git
+
+# Add command to hash table
+hash git=/usr/local/bin/git
+
+# Clear hash table
+hash -r
+
+# Remove specific entry
+hash -d ls
+```
+
+::: tip Performance
+The hash table speeds up command lookup by caching paths of previously executed commands.
+:::
+
+### Path Search Rules
+
+```bash
+# Command with slash - direct execution
+./script.sh     # Current directory
+../bin/tool    # Relative path
+/usr/bin/python # Absolute path
+
+# Command without slash - PATH search
+python         # Searches each directory in $path
+```
+
+## Command Execution Environment
+
+### Variable Inheritance
+
+```bash
+# Local variable - not inherited
+local_var="local"
+bash -c 'echo $local_var'  # Empty output
+
+# Export variable - inherited
+export PATH="/custom/path:$PATH"
+bash -c 'echo $PATH'       # Shows modified PATH
+```
+
+### Function Export
+
+```bash
+# Export function to subshells
+export -f my_function
+
+# Check exported functions
+export -f
+
+# Remove function export
+export -fn my_function
+```
+
+## Execution Contexts
+
+### Subshell Execution
+
+```bash
+# Command group in subshell
+(cd /tmp && ls)  # Directory change isolated
+echo $PWD        # Original directory unchanged
+
+# Process substitution
+diff <(ls dir1) <(ls dir2)
+```
+
+::: warning Subshell Limitations
+- Cannot modify parent shell environment
+- Slower than current shell execution
+- Creates new process
+:::
+
+### Current Shell Execution
+
+```bash
+# Command group in current shell
+{ cd /tmp && ls; }  # Directory change affects current shell
+echo $PWD           # Shows /tmp
+
+# Source script
+. ./script.sh       # Execute in current shell
+source script.sh    # Alternative syntax
+```
+
+## Error Recovery
+
+### Trap Handling
+
+```bash
+# Set up error trap
+trap 'echo "Command failed: $BASH_COMMAND"' ERR
+
+# Clean up on exit
+trap 'rm -f /tmp/tempfile' EXIT
+
+# Ignore signals
+trap '' INT QUIT
+```
+
+### Debug Mode
+
+```bash
+# Enable command tracing
+set -x
+command1
+command2
+set +x
+
+# Debug specific command
+zsh -x script.sh
+
+# Debug and show line numbers
+PS4='+${BASH_SOURCE}:${LINENO}:' zsh -x script.sh
+```
 
 ## Best Practices
 

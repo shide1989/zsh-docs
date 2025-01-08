@@ -6,7 +6,7 @@ titleTemplate: Modern documentation for Zsh
 hero:
   name: "The Z Shell"
   text: "A powerful shell for modern systems"
-  tagline: Version 5.9 - Updated May 14, 2022
+  tagline: A documentation based on the original v5.9 Manual
   actions:
     - theme: brand
       text: Get Started
@@ -36,7 +36,7 @@ features:
 
 This documentation covers Zsh, a freely available UNIX command interpreter (shell). While Zsh most closely resembles the Korn shell (ksh), it includes many enhancements and unique features. Though capable of emulating POSIX shells, its default mode offers extended functionality beyond POSIX compliance.
 
-## About This Manual
+## About The Original Manual
 
 - **Original Author**: Paul Falstad
 - **Current Version**: 5.9
@@ -45,6 +45,7 @@ This documentation covers Zsh, a freely available UNIX command interpreter (shel
   - Make and distribute verbatim copies (preserving copyright notice)
   - Distribute modified versions under identical terms
   - Create and distribute translations under the same conditions
+- **Source**: [Zsh Manual](https://zsh.sourceforge.io/Doc/Release/)
 
 ## Quick Links
 

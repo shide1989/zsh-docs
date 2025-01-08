@@ -1,7 +1,7 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
-  title: "The Z Shell Manual",
+  title: "The Z Shell Docs",
   description: "Modern documentation for the Z Shell (Zsh)",
 
   themeConfig: {
@@ -56,7 +56,7 @@ export default defineConfig({
           ],
         },
         {
-          text: "Shell Grammar",
+          text: "Core Shell Concepts",
           items: [
             { text: "Shell Grammar", link: "/shell-grammar/" },
             { text: "Redirection", link: "/redirection/" },
